@@ -1,0 +1,130 @@
+import random
+import math
+print("JEDNIČKY A PĚTKY – hra se šesti kostkami\nHráč začne házet se šesti kostkami a po každém hodu musí odložit nejméně jednu bodovanou\nkostku (viz bodování). Poté může pokračovat se zbývajícími kostkami nebo si pouze zapsat\npočet nahraných bodů. V tomto případě ukončí toto kolo a začíná další. Pokud odloží\nposlední kostku, může pokračovat znovu se 6-ti kostkami. Jestliže nemůže odložit žádnou\nbodovou kostku, ztrácí všechny body v tomto kole.\n Bodování :\njednička = 100 b. pětka = 50 b. \n3x stejné číslo = 100x číslo (3x trojka = 300, 3x pětka = 500)\n3x jednička = 1000\n4x stejné číslo = 2x kolik by to bylo s 3x stejné (4x trojka = 600, 4x jednička = 2000)\n5x stejné číslo = 4x kolik by to bylo s 3x stejné (5x trojka = 1200, 5x jednička = 4000)\n6x stejné číslo = 8x kolik by to bylo s 3x stejné (6x trojka = 2400, 6x jednička = 8000)\nBody se sčítají a vyhraješ pokud dosáhneš 10000 bodů\n Ovládání:\nKdyž píšeš, které kostky odložíš, piš kolikáté jsou zleva.\nNapříklad pokud hodíš\n[5, 2, 5, 3, 4, 6] a chceš označit obě pětky, napiš\n'1 3', pokud chceš házet dál, nebo '13zapsat', pokud chceš ukončit kolo,\n a zmáčkni tlačítko enter. Pokud dohraješ kolo, další\nspustíš zmáčknutím tačítka enter, nebo pokud chceš hru ukončit,\n napiš 'konec'\n\nŠťastnou hru! ;-) ")
+print(("_ ")*50 + "\n")
+cskore = 0
+while True:
+  kostky = []
+  komb = 0
+  basc = 0
+  rada = 0
+  lenkost = 6
+  hod = 0
+  oznaceny = []
+  daltahkost = []
+  neoznacitel = 0
+  neodpovida = 0
+  appvybr = []
+  nastr = []
+  skore = 0
+  zaloha = []
+
+  while True:
+    if neoznacitel == 0 and neodpovida == 0:
+      lenkost -= len(oznaceny)
+      kostky.clear()
+      if lenkost == 0:
+        lenkost = 6
+        daltahkost = []
+      if daltahkost != []:
+        print(f"Odložené kostky", daltahkost)
+      if skore != 0:
+        print(f"Tvoje body: ", skore)
+      for i in range(lenkost):
+        hod = random.randint(1, 6)
+        kostky.append(hod)
+      print(f"Hozené kostky", kostky)
+      lenkost = len(kostky)
+      for j in range(6
+                     ):
+        pocet = kostky.count(j+1)
+        if pocet >=3:
+          komb += 1
+      if 1 in kostky or 5 in kostky:
+        basc +=1
+      if komb >= 1 or basc >=1:
+        komb = 0
+        basc = 0
+      else:
+        print(f"Nemůžeš odložit žádné kostky, takže kolo končí. Body o které si přišel: ", skore)
+        break
+
+    oznacit = input(str("Které kostky odložíš? "))
+    print(("_ ")*50 + "\n")
+    oznaceny.clear()
+    for k in range(lenkost):
+      o = k+1
+      o2 = str(o)
+      if o2 in oznacit:
+        oznaceny.append(k+1)
+    if oznaceny == []:
+      neodpovida = 1
+      print("Nic z toho, co si napsal, neodpovídá pozici kostky, nebo si nic nenapsal.")
+      print(f"Hozené kostky", kostky)
+    else:
+      neodpovida = 0
+    for l in range(len(oznaceny)):          
+      krvy1 = oznaceny[l]-1
+      krvy = kostky[krvy1]
+      nastr.append(krvy)                    
+      appvybr.append(krvy)
+
+    for j in range(6):
+      pocet = nastr.count(j+1)
+      if pocet >=3:
+        for q in range(pocet):
+          if j+1 in nastr:
+            nastr.remove(j+1)
+      if 1 in kostky or 5 in kostky:
+        for w in range(len(nastr)):
+          if 1 in nastr:
+            nastr.remove(1)
+          if 5 in nastr:
+            nastr.remove(5)
+    if nastr != []:
+      print(f"čísla", nastr, "nejdou označit")
+      print(f"Hozené kostky ", kostky)
+      nastr.clear()
+      neoznacitel = 1
+    else:
+      neoznacitel = 0
+      for i in range(len(appvybr)):
+        daltahkost.append(appvybr[i])
+        zaloha.append(appvybr[i])
+    appvybr.clear()
+
+    for j in range(6):
+      pocet = zaloha.count(j+1)
+      if pocet >=3 and pocet <=6:
+        if pocet == 3:
+          if j == 0:
+            skore += 1000
+          else:
+            skore += (j+1)*100
+        if pocet > 3 and pocet <=6:
+          if j == 0:
+            skore += 1000*(2**((pocet)-3))
+          else:
+            skore +=(j+1)*100*(2**((pocet)-3))
+        for q in range(pocet): 
+          if j+1 in zaloha:
+            zaloha.remove(j+1)
+    if 1 in kostky or 5 in kostky:
+        for w in range(len(zaloha)):
+          if 1 in zaloha:
+            skore += 100
+            zaloha.remove(1)
+          if 5 in zaloha:
+            skore += 50
+            zaloha.remove(5)
+    if "zapsat" in oznacit and neoznacitel == 0 and neodpovida == 0:
+      cskore += skore
+      print(f"Zapsal si ", skore, " tvoje celkové body jsou tedy: ", cskore)
+      break
+  if cskore >= 10000:
+    print("Gratuluju, vyhráls \nDěkuju za hraní") 
+  konec = input(str("Pro další kolo stiskni enter, pro konec hry napiš 'konec'."))
+  if konec == "konec":
+    break
+  print(("_ ")*50 + "\n")
+daltahkost.clear()
