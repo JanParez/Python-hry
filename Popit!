@@ -1,0 +1,211 @@
+!pip install colorama
+pop = [['O'], ['O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O'], ['O', 'O', 'O']]
+from colorama import Fore, Style
+import random
+
+def show(color=Fore.RED):
+  for i in range(len(pop)):
+    if len(pop[i]) == 1:
+      print(color+f"   1   ", pop[i])
+    elif len(pop[i]) == 2:
+      print(color+f"   2 ", pop[i])
+    elif i == 9:
+      print(color+f"10 ", pop[i])
+    else:
+      print(color+f" ", i+1, pop[i])
+
+def popn(k = 1, z = 1):
+  jedp = 0
+  dvap = 0
+  trip = 0
+  jedfp = []
+  dvafp = []
+  trifp = []
+  for i in range(len(pop)):
+    koliko = pop[i].count("O")
+    if koliko == 1:
+      jedp += 1
+      jedfp.append(i)
+    if koliko == 2:
+      dvap += 1  
+      dvafp.append(i) 
+    if koliko == 3:
+      trip += 1
+      trifp.append(i)
+  zjdt =[]
+  zjdt.append(jedfp)
+  zjdt.append(dvafp)
+  zjdt.append(trifp)
+  a = random.randint(1, len(zjdt[z-1])) -1
+  for i in range(k):
+      pop[zjdt[z-1][a]].pop()
+      pop[zjdt[z-1][a]].insert(0, "X")
+
+def play(skin=Fore.RED):
+  kon4=0
+  kon5=0
+  while kon4 != 1:
+    show(skin)
+    rada = int(input(f"v kolikate řadě odshora chceš popnout?"))
+    if rada <= len(pop):
+      kon2 = pop[rada-1].count('O')
+      if kon2 != 0:
+        kolik = int(input("kolik bublin chceš popnout?"))
+        if kon2 >= kolik:
+          for i in range(kolik):
+            pop[rada-1].pop()
+            pop[rada-1].insert(0, "X")
+            for i in range(len(pop)):
+              kon3 = pop[i].count('O')
+              kon5 +=kon3
+            if kon5 == 0:
+              show(Fore.BLUE)
+              konec = 1
+          kon4 = 1
+
+gratulace = "gratuluju, vymyslel si perfektní strategii, nebo máš fakt velký štěstí"
+def bot(pop):
+  jed = 0
+  dva = 0
+  tri = 0
+  jedf = []
+  dvaf = []
+  trif = []
+  for i in range(len(pop)):
+    koliko = pop[i].count("O")
+    if koliko == 1:
+      jed += 1
+      jedf.append(i)
+    if koliko == 2:
+      dva += 1  
+      dvaf.append(i) 
+    if koliko == 3:
+      tri += 1
+      trif.append(i)
+  while jed >= 2:
+    jed -=2
+  while dva >= 2:
+    dva -=2
+  while tri >= 2:
+    tri -=2
+  jeo = len(jedf)
+  dvo = len(dvaf)
+  tro = len(trif)
+
+  if jed == 1 and dva == 0 and tri == 0:
+      losik = random.randint(1,2)
+      if tro >= 2:
+        if losik == 1:
+          popn(1,3)
+        if losik == 2:
+          popn(1,1)
+      else:
+        popn(1,1)
+  
+  if jed == 0 and dva == 1 and tri == 0:
+    if tro >= 2 or dvo >=2:
+      losik = random.randint(1,2)
+      if tro >= 2:
+        if losik == 1:
+          popn(2,3)
+        if losik == 2:
+          popn(2,2)
+      else:
+        popn(2,2)
+    else:
+      popn(1,2)
+
+  if jed == 0 and dva == 0 and tri == 1:
+    if tro >= 2 or dvo >=2:
+      if dvo >=2:
+        losik = random.randint(1,2)
+        if losik == 1:
+          popn(1,2)
+        if losik == 2:
+          popn(3,3)
+      else:
+        popn(3,3)
+    else:
+      popn(2,3)
+  
+  if jed == 0 and dva == 1 and tri == 1:
+    if jeo >= 2:
+      losik = random.randint(1,2)
+      if losik == 1:
+        popn(1,1)
+      if losik == 2:
+        popn(1,3)
+    else:
+        popn(1,3)
+
+  if jed == 1 and dva == 0 and tri == 1:
+    if tro >= 2 or dvo >=2:
+      if dvo >= 2:
+        losik = random.randint(1,2)
+        if losik == 1:
+          popn(2,2)
+        if losik == 2:
+          popn(2,3)
+      else:
+        popn(2,3)
+    else:
+      popn(3,3)
+
+  if jed == 1 and dva == 1 and tri == 0:
+    if tro >= 2 or dvo >= 2:
+      if tro >= 2:
+        losik = random.randint(1,2)
+        if losik == 1:
+          popn(1,2)
+        if losik == 2:
+          popn(3,3)
+      else:
+        popn(2,2)
+    else:
+      popn(2,2)
+
+  if jed == 1 and dva == 1 and tri == 1:
+    popn(1,1)
+  
+  if jed == 0 and dva == 0 and tri == 0:
+    if trif != [] and dvaf != []:
+      popn(random.randint(1,3),random.randint(1,2))
+    elif dvaf != []:
+      popn(random.randint(1,2),2)
+    elif trif != []:
+      popn(random.randint(1,3),3)
+    else:
+      popn(1,1)
+  
+  x = jeo + dvo + tro
+  if x == 0:
+    konec = 1
+
+konec = 0
+los = random.randint(1,2)
+print("pravidla: hra pro 2 hráče (zelená a červená). hraci se stridaji po jednou tahu. v kazdem tahu musi hrac 'popnout' několik bublin v jedné řadě, muze si vybrat kolik. hrac ktery 'popne' poslední bublinu prohrál")
+while konec == 0:
+  if los == 1:
+    print("začínáš")
+  if los == 2:
+    print("začíná bot")
+  if los != 2:
+    play()
+    pocetO = 0
+    for i in range(len(pop)):
+        koliko = pop[i].count("O")
+        pocetO += koliko
+    if pocetO == 0:
+      print("seš debilní a prohrála si proti programu v dětský hře xd")
+      break
+  if konec == 0:
+    show(Fore.GREEN)
+    bot(pop)
+  pocetO = 0
+  for i in range(len(pop)):
+      koliko = pop[i].count("O")
+      pocetO += koliko
+  if pocetO == 0:
+    print(gratulace)
+    break
+  los = 0
