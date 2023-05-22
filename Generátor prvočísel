@@ -1,0 +1,21 @@
+import math
+
+poradi = 1
+kontrola = 0
+while True:
+  zasobnilcisel = []
+  for i in range(poradi):
+    zasobnilcisel.append(i)
+  zasobnilcisel.remove(0)
+  if poradi >= 2:
+    zasobnilcisel.remove(1)
+  for j in range(poradi-2):
+    b = poradi / zasobnilcisel[j]
+    if (b).is_integer() ==True:
+      kontrola=1
+      break
+  if kontrola !=1:
+    print(poradi)
+          
+  kontrola = 0
+  poradi +=1
